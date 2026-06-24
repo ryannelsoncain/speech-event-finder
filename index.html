@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Find Your Event — Speech &amp; Debate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --curtain:#2A1B3D;
+    --curtain-2:#1C1230;
+    --panel:#372650;
+    --panel-2:#412c5e;
+    --bone:#F4ECDD;
+    --coral:#FF5B49;
+    --coral-soft:#ff7a6b;
+    --brass:#E8B04B;
+    --mute:#B7A6C9;
+    --line:rgba(244,236,221,.14);
+    --line-soft:rgba(244,236,221,.08);
+    --shadow:0 18px 50px -20px rgba(0,0,0,.7);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1100px 600px at 50% -8%, rgba(255,91,73,.16), transparent 60%),
+      linear-gradient(180deg,var(--curtain) 0%, var(--curtain-2) 100%);
+    background-attachment:fixed;
+    color:var(--bone);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.55;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:28px 22px 80px;}
+
+  /* ---------- shared bits ---------- */
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--brass);
+  }
+  .mono{font-family:'Space Mono',monospace;}
+  h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;line-height:1.02;margin:0;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  button:focus-visible, a:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:6px;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:.55em;
+    background:var(--coral);color:#23121f;font-weight:600;
+    padding:14px 24px;border-radius:999px;font-size:16px;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    box-shadow:0 10px 28px -12px rgba(255,91,73,.8);
+  }
+  .btn:hover{transform:translateY(-2px);background:var(--coral-soft);}
+  .btn.ghost{background:transparent;color:var(--bone);border:1px solid var(--line);box-shadow:none;font-weight:500;}
+  .btn.ghost:hover{background:rgba(244,236,221,.06);transform:translateY(-2px);}
+  .btn.small{padding:10px 18px;font-size:14px;}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:34px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+  .brand .dot{width:9px;height:9px;border-radius:2px;background:var(--coral);box-shadow:0 0 12px var(--coral);}
+  .navlink{font-family:'Space Mono',monospace;font-size:13px;color:var(--mute);letter-spacing:.04em;border-bottom:1px solid transparent;padding-bottom:2px;}
+  .navlink:hover{color:var(--bone);border-color:var(--coral);}
+
+  /* ---------- home ---------- */
+  .hero{position:relative;padding:38px 0 8px;}
+  .hero .spot{
+    position:absolute;inset:-40px -10% auto -10%;height:340px;z-index:0;pointer-events:none;
+    background:radial-gradient(closest-side, rgba(255,91,73,.28), rgba(255,91,73,0) 70%);
+    filter:blur(6px);
+  }
+  .hero-inner{position:relative;z-index:1;}
+  .hero h1{font-size:clamp(46px,9vw,86px);letter-spacing:-.02em;margin:14px 0 0;}
+  .hero h1 .em{color:var(--coral);font-style:italic;font-weight:700;}
+  .lede{font-size:clamp(17px,2.4vw,21px);color:var(--bone);max-width:54ch;margin:20px 0 6px;}
+  .lede b{color:var(--brass);font-weight:600;}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;align-items:center;}
+  .ticker{
+    margin-top:46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    overflow:hidden;white-space:nowrap;padding:12px 0;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  }
+  .ticker .run{display:inline-block;animation:slide 34s linear infinite;}
+  .ticker span{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.12em;color:var(--mute);margin:0 18px;text-transform:uppercase;}
+  .ticker span b{color:var(--brass);}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .home-foot{margin-top:30px;color:var(--mute);font-size:14.5px;max-width:60ch;}
+
+  /* ---------- quiz ---------- */
+  .progress{display:flex;align-items:center;gap:14px;margin-bottom:30px;}
+  .pbar{flex:1;height:6px;border-radius:99px;background:rgba(244,236,221,.1);overflow:hidden;}
+  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--brass),var(--coral));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+  .pcount{font-family:'Space Mono',monospace;font-size:13px;color:var(--mute);letter-spacing:.06em;white-space:nowrap;}
+
+  .q-kicker{font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);margin-bottom:14px;}
+  .q-title{font-size:clamp(28px,5vw,42px);letter-spacing:-.01em;max-width:18ch;}
+  .q-hint{color:var(--mute);font-size:14.5px;margin-top:12px;font-family:'Space Mono',monospace;letter-spacing:.03em;}
+
+  .options{display:grid;gap:12px;margin-top:28px;}
+  .opt{
+    text-align:left;width:100%;
+    background:var(--panel);border:1px solid var(--line-soft);border-radius:16px;
+    padding:18px 20px;display:flex;align-items:center;gap:16px;
+    transition:transform .14s ease, border-color .14s ease, background .14s ease;
+    color:var(--bone);
+  }
+  .opt:hover{transform:translateX(4px);border-color:var(--coral);background:var(--panel-2);}
+  .opt .tick{
+    width:24px;height:24px;border-radius:50%;border:2px solid var(--mute);flex:none;
+    display:grid;place-items:center;transition:all .14s ease;
+  }
+  .opt.sel{border-color:var(--coral);background:var(--panel-2);}
+  .opt.sel .tick{border-color:var(--coral);background:var(--coral);}
+  .opt.sel .tick::after{content:"";width:9px;height:9px;border-radius:50%;background:#23121f;}
+  .opt .otext{font-size:16.5px;font-weight:500;}
+  .opt .osub{display:block;font-size:13px;color:var(--mute);font-weight:400;margin-top:3px;}
+
+  .q-actions{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px;}
+  .backlink{font-family:'Space Mono',monospace;font-size:13.5px;color:var(--mute);letter-spacing:.04em;}
+  .backlink:hover{color:var(--bone);}
+
+  /* ---------- result ---------- */
+  .res-head{position:relative;text-align:center;padding:18px 0 6px;}
+  .res-head .spot{
+    position:absolute;left:50%;top:-30px;transform:translateX(-50%);
+    width:520px;max-width:120%;height:300px;z-index:0;pointer-events:none;
+    background:radial-gradient(closest-side, rgba(255,91,73,.34), rgba(232,176,75,.12) 45%, transparent 72%);
+    filter:blur(4px);animation:bloom .9s ease both;
+  }
+  @keyframes bloom{from{opacity:0;transform:translateX(-50%) scale(.9)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+  .res-head .inner{position:relative;z-index:1;}
+  .res-eyebrow{font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);}
+
+  .topcard{
+    position:relative;z-index:1;background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);border-radius:22px;padding:30px 28px;margin-top:18px;box-shadow:var(--shadow);
+    animation:rise .5s ease both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .tc-top{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .monogram{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:800;
+    font-size:30px;letter-spacing:-.02em;color:#23121f;
+    background:var(--brass);border-radius:14px;padding:14px 16px;line-height:1;flex:none;min-width:62px;text-align:center;
+  }
+  .tc-name{flex:1;min-width:200px;}
+  .tc-name h2{font-size:clamp(26px,4.6vw,36px);}
+  .tc-tag{color:var(--coral-soft);font-style:italic;font-size:16px;margin-top:4px;}
+  .meter{margin-top:6px;display:flex;align-items:center;gap:10px;}
+  .meter .bar{flex:1;height:8px;border-radius:99px;background:rgba(244,236,221,.1);overflow:hidden;max-width:220px;}
+  .meter .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brass),var(--coral));}
+  .meter .pct{font-family:'Space Mono',monospace;font-size:13px;color:var(--brass);}
+
+  .tc-blurb{margin-top:18px;font-size:16px;color:var(--bone);}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+  .chip{
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.04em;
+    background:rgba(244,236,221,.06);border:1px solid var(--line);color:var(--mute);
+    padding:6px 11px;border-radius:99px;
+  }
+  .chip.hit{background:rgba(255,91,73,.14);border-color:rgba(255,91,73,.5);color:var(--coral-soft);}
+  .why{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);}
+  .why .lab{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);margin-bottom:10px;}
+  .note{margin-top:16px;font-size:13.5px;color:var(--brass);background:rgba(232,176,75,.08);border:1px solid rgba(232,176,75,.3);padding:10px 14px;border-radius:12px;}
+
+  .runners h3{font-size:15px;font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:34px 0 14px;}
+  .rcard{
+    width:100%;text-align:left;background:var(--panel);border:1px solid var(--line-soft);border-radius:16px;
+    padding:16px 18px;display:flex;align-items:center;gap:16px;margin-bottom:10px;transition:border-color .14s,transform .14s;color:var(--bone);
+  }
+  .rcard:hover{border-color:var(--coral);transform:translateX(3px);}
+  .rmono{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;color:var(--brass);min-width:46px;text-align:center;flex:none;}
+  .rmid{flex:1;min-width:0;}
+  .rmid .rn{font-weight:600;font-size:16px;}
+  .rmid .rt{color:var(--mute);font-size:13.5px;}
+  .rmeter{width:70px;height:6px;border-radius:99px;background:rgba(244,236,221,.1);overflow:hidden;flex:none;}
+  .rmeter i{display:block;height:100%;background:linear-gradient(90deg,var(--brass),var(--coral));}
+
+  .res-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;justify-content:center;}
+
+  /* ---------- directory ---------- */
+  .dir-head{margin-bottom:8px;}
+  .dir-head h1{font-size:clamp(34px,6vw,54px);letter-spacing:-.02em;}
+  .dir-sub{color:var(--mute);max-width:62ch;margin-top:14px;font-size:15.5px;}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 6px;}
+  .fchip{
+    font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.03em;
+    background:transparent;border:1px solid var(--line);color:var(--mute);padding:7px 13px;border-radius:99px;transition:all .14s;
+  }
+  .fchip:hover{color:var(--bone);border-color:var(--coral-soft);}
+  .fchip.on{background:var(--coral);color:#23121f;border-color:var(--coral);font-weight:700;}
+
+  .famgroup{margin-top:30px;}
+  .famtitle{font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;}
+  .ecard{
+    background:var(--panel);border:1px solid var(--line-soft);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;
+    transition:transform .14s,border-color .14s;
+  }
+  .ecard:hover{transform:translateY(-3px);border-color:var(--coral);}
+  .ecard .ehead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+  .ecard h3{font-size:20px;letter-spacing:-.01em;}
+  .ecard .abbr{font-family:'Space Mono',monospace;font-size:12px;color:var(--brass);letter-spacing:.06em;}
+  .ecard .etag{color:var(--coral-soft);font-style:italic;font-size:13.5px;}
+  .ecard .eblurb{color:var(--mute);font-size:14px;}
+  .ecard .efmt{font-family:'Space Mono',monospace;font-size:11.5px;color:var(--mute);letter-spacing:.03em;border-top:1px solid var(--line-soft);padding-top:10px;margin-top:2px;}
+  .ecard .echips{display:flex;flex-wrap:wrap;gap:6px;}
+  .ecard .echips .chip{font-size:11px;padding:4px 9px;}
+
+  .placeholder{font-size:13px;color:var(--brass);background:rgba(232,176,75,.08);border:1px dashed rgba(232,176,75,.4);padding:8px 11px;border-radius:10px;}
+
+  .foot{margin-top:60px;padding-top:20px;border-top:1px solid var(--line-soft);color:var(--mute);font-size:13px;font-family:'Space Mono',monospace;letter-spacing:.03em;text-align:center;}
+
+  /* ---------- mobile phones ---------- */
+  @media (max-width:600px){
+    body{background-attachment:scroll;} /* avoids the iOS fixed-bg jump */
+    .wrap{padding:16px 14px 60px;}
+    .topbar{margin-bottom:22px;gap:10px;}
+    .brand{font-size:11px;letter-spacing:.09em;}
+    .navlink{font-size:11.5px;}
+
+    .hero{padding:20px 0 4px;}
+    .hero .spot{height:240px;}
+    .hero h1{font-size:clamp(40px,15vw,58px);}
+    .lede{font-size:16px;margin-top:16px;}
+    .hero-cta{flex-direction:column;align-items:stretch;gap:10px;}
+    .hero-cta .btn{width:100%;justify-content:center;}
+    .ticker{margin-top:32px;}
+    .ticker span{margin:0 12px;font-size:11.5px;}
+    .home-foot{font-size:14px;}
+
+    .progress{margin-bottom:22px;}
+    .q-title{font-size:clamp(25px,7.5vw,34px);max-width:none;}
+    .options{margin-top:20px;gap:10px;}
+    .opt{padding:15px 15px;border-radius:14px;gap:13px;}
+    .opt .otext{font-size:15.5px;}
+    .q-actions{flex-wrap:wrap;gap:14px;margin-top:22px;}
+
+    .res-head .spot{height:230px;}
+    .topcard{padding:22px 16px;border-radius:18px;}
+    .tc-top{gap:16px;}
+    .tc-name h2{font-size:26px;}
+    .monogram{font-size:26px;min-width:54px;padding:12px 14px;}
+    .meter .bar{max-width:none;}
+    .res-actions{flex-direction:column;align-items:stretch;gap:10px;}
+    .res-actions .btn{width:100%;justify-content:center;}
+    .rcard{padding:14px 15px;gap:13px;}
+
+    .dir-head h1{font-size:clamp(30px,9vw,44px);}
+    .grid{grid-template-columns:1fr;}
+    .filters{gap:7px;}
+  }
+
+  /* ---------- touch devices: keep taps from leaving stuck hover states ---------- */
+  @media (hover:none){
+    .opt:hover,.ecard:hover,.rcard:hover,.btn:hover,.btn.ghost:hover{transform:none;}
+    .opt:hover{background:var(--panel);border-color:var(--line-soft);}
+    .navlink:hover{border-color:transparent;color:var(--mute);}
+    body{-webkit-tap-highlight-color:rgba(255,91,73,.18);}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Robbinsdale Speech &middot; Event Finder</div>
+    <a class="navlink" id="nav-toggle" href="#">Browse all events &rarr;</a>
+  </div>
+  <div id="app"></div>
+  <div class="foot">Built from the team's own playbook &middot; 14 events, tag-matched</div>
+</div>
+
+<script>
+/* ============================================================
+   TAG DICTIONARY  (internal key -> student-facing label)
+   ============================================================ */
+const TAGS = {
+  acting:"Character acting",
+  interp:"Performing published work",
+  original:"Original writing",
+  writing:"Wordsmithing",
+  analysis:"Rhetoric & analysis",
+  research:"Research & sources",
+  currentevents:"Current events",
+  persuasion:"Problems & solutions",
+  comedy:"Comedy & high energy",
+  drama:"Serious & emotional",
+  movement:"Movement & blocking",
+  visualaids:"Visual aids",
+  reading:"Reading aloud",
+  limitedprep:"Think on your feet",
+  confrontation:"Competitive clash",
+  solo:"Flying solo",
+  partner:"One partner",
+  team:"A whole crew",
+  whimsy:"Big kid-energy"
+};
+
+/* ============================================================
+   EVENTS  (data straight from the team doc, tag-profiled)
+   ============================================================ */
+const EVENTS = [
+  {
+    id:"creative", name:"Creative Expression", abbr:"CE", mono:"CE",
+    family:"Interp & Performance",
+    tagline:"A Marketplace of Ideas",
+    blurb:"A writers'-room team event. You brainstorm and build an original piece together — poetry, monologue, or short story — with a real arc: teaser, conflict, climax, ending. Every voice in the room matters.",
+    fmt:"Team · Original · ~10 min · Performed",
+    tags:{team:3, original:2, writing:2, acting:2, drama:1, comedy:1}
+  },
+  {
+    id:"discussion", name:"Discussion", abbr:"DISC", mono:"DC",
+    family:"Discussion",
+    tagline:"Group problem-solving",
+    blurb:"An hour-long competitive Socratic seminar. You research a task, then talk, clarify, and push toward solutions in a live group. Built for relentless yappers and researchers who thrive in heated rooms and never quit.",
+    fmt:"Group round · Research + in-round · 60 min",
+    tags:{confrontation:3, research:2, persuasion:1, currentevents:1, limitedprep:1, analysis:1}
+  },
+  {
+    id:"drama", name:"Drama", abbr:"DRA", mono:"DR",
+    family:"Interp & Performance", cluster:"interp-lit",
+    tagline:"Range, emotional and otherwise",
+    blurb:"Solo interpretation of published plays and screenplays. Bring scripted scenes to life across the full emotional range — loud, raw intensity to quiet vulnerability and the nuanced middle. Pick pieces that move you, and stay emotionally healthy doing it.",
+    fmt:"Solo · Plays & screenplays · ~10 min · Memorized",
+    tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
+  },
+  {
+    id:"prose", name:"Prose", abbr:"PRO", mono:"PR",
+    family:"Interp & Performance", cluster:"interp-lit",
+    tagline:"Range, emotional and otherwise",
+    blurb:"Solo interpretation of published short stories and novel excerpts. Carry an audience through a narrative with grounded, nuanced acting and real emotional range. Pick pieces that resonate with you, and stay emotionally healthy doing it.",
+    fmt:"Solo · Short stories & novels · ~10 min · Memorized",
+    tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
+  },
+  {
+    id:"poetry", name:"Poetry", abbr:"POE", mono:"PT",
+    family:"Interp & Performance", cluster:"interp-lit",
+    tagline:"Range, emotional and otherwise",
+    blurb:"Solo interpretation of published poems — a single work or a collection. Wield rhythm, imagery, and emotion to make verse land, from loud yelling to soft sadness. Pick pieces that speak to you, and stay emotionally healthy doing it.",
+    fmt:"Solo · Published poems · ~10 min · Memorized",
+    tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
+  },
+  {
+    id:"duo", name:"Duo Interpretation", abbr:"DUO", mono:"DU",
+    family:"Interp & Performance",
+    tagline:"Art in motion, but don't touch!",
+    blurb:"Two performers, intricate blocking and choreography, no touching or eye contact. Think dance, not dialogue. Heavy memorization and total sync with your partner.",
+    fmt:"Partner · Published · ~10 min · Memorized",
+    note:"Duos must carry a backup category in case a partner is out sick.",
+    tags:{interp:3, partner:3, movement:3, acting:2, comedy:1, drama:1}
+  },
+  {
+    id:"reading", name:"Extemporaneous Reading", abbr:"XR", mono:"XR",
+    family:"Limited Prep / Draw",
+    tagline:"Bringing the book to life",
+    blurb:"Draw a story, get ~30 minutes, then read it aloud with expression and vocal variety. For people who love getting lost in a good story and can make a page come alive.",
+    fmt:"Solo · Draw · 30-min prep · Read aloud",
+    tags:{reading:3, limitedprep:2, solo:2, acting:1, interp:1}
+  },
+  {
+    id:"extemp", name:"Extemporaneous Speaking", abbr:"XS", mono:"XS",
+    family:"Limited Prep / Draw",
+    tagline:"Political, Persuasive, Incisive",
+    blurb:"Draw a current-events question, prep a 7-minute speech in 30 minutes. For news junkies who research fast and explain why it matters — Jon Stewart energy with real analysis.",
+    fmt:"Solo · Draw · 30-min prep · 7 min",
+    note:"International Extemp is an advanced track for experienced juniors & seniors.",
+    tags:{currentevents:3, research:2, limitedprep:2, analysis:2, persuasion:1, solo:1, confrontation:1}
+  },
+  {
+    id:"greatspeeches", name:"Great Speeches", abbr:"GS", mono:"GS",
+    family:"Public Address",
+    tagline:"A New Look for an Old Category",
+    blurb:"A 10-minute rhetorical breakdown of a historic speech using a framework you pick with your coach. For analytical writers who love the craft of rhetoric and want to make analysis exciting, not stuffy.",
+    fmt:"Solo · ~10 min · Memorized + analysis",
+    tags:{analysis:3, writing:3, research:2, solo:1, reading:1}
+  },
+  {
+    id:"hi", name:"Humorous Interpretation", abbr:"HI", mono:"HI",
+    family:"Interp & Performance",
+    tagline:"Funny First, Funny Always",
+    blurb:"Solo comedic performance of a published script. Big characters, wild voices, high-octane energy and a full story arc — laughs above all.",
+    fmt:"Solo · Published script · ~10 min · Memorized",
+    tags:{interp:3, solo:2, comedy:3, acting:2}
+  },
+  {
+    id:"info", name:"Informative Speaking", abbr:"INF", mono:"IS",
+    family:"Public Address",
+    tagline:"Teaching, performed.",
+    blurb:"A 10-minute original speech with visual aids and boards on a topic you're obsessed with. For teachers-at-heart who love weird facts and want to sell a room on why they should care.",
+    fmt:"Solo · Original + visual aids · 10 min",
+    tags:{original:3, visualaids:3, research:2, writing:1, solo:1, comedy:1}
+  },
+  {
+    id:"oo", name:"Original Oratory", abbr:"OO", mono:"OO",
+    family:"Public Address",
+    tagline:"The original “public speaking”",
+    blurb:"A 10-minute original persuasive speech naming a real social problem and pitching solutions. Weaves anecdote, research, and emotion. The heart of public address.",
+    fmt:"Solo · Original · 10 min · Memorized",
+    tags:{original:3, persuasion:3, writing:2, research:1, drama:1, solo:1}
+  },
+  {
+    id:"poi", name:"Program Oral Interpretation", abbr:"POI", mono:"PO",
+    family:"Interp & Performance",
+    tagline:"A New Category",
+    blurb:"Weave multiple genres — prose, poetry, drama — around a single theme, performed from a binder. (Placeholder description — the team doc didn't have your take on this one yet.)",
+    fmt:"Solo · Multi-genre · Binder",
+    placeholder:true,
+    tags:{interp:3, solo:2, reading:2, acting:2, drama:1, comedy:1}
+  },
+  {
+    id:"story", name:"Storytelling", abbr:"ST", mono:"ST",
+    family:"Interp & Performance",
+    tagline:"The Nuclear Reactors of Speech Energy",
+    blurb:"Draw a story and perform it for (imaginary) 5-year-olds — stock characters, a narrator, huge cartoon energy and physical comedy in 7 minutes.",
+    fmt:"Solo · Draw · 7 min · High energy",
+    tags:{limitedprep:2, solo:1, comedy:2, acting:2, whimsy:3}
+  }
+];
+
+const FAMILY_ORDER = ["Interp & Performance","Public Address","Limited Prep / Draw","Discussion"];
+
+/* ============================================================
+   QUESTIONS  (answers add weight to tags)
+   ============================================================ */
+const QUESTIONS = [
+  {
+    id:"mode", type:"single",
+    kicker:"The big one",
+    title:"How do you want to spend a round?",
+    hint:"Pick the one that sounds the most like you.",
+    options:[
+      {label:"Becoming a character and acting out a story", sub:"Voices, movement, performance", w:{acting:3, interp:2}},
+      {label:"Saying something I wrote myself", sub:"My ideas, my words, my speech", w:{original:3, writing:2}},
+      {label:"Breaking down the news or a famous speech", sub:"Analysis, evidence, why it matters", w:{currentevents:2, analysis:2, research:2}},
+      {label:"Thinking on my feet with barely any prep", sub:"Draw a topic, go", w:{limitedprep:3}},
+      {label:"Out-talking everyone in a live problem-solving brawl", sub:"Research, clash, never quit", w:{confrontation:3, research:1}}
+    ]
+  },
+  {
+    id:"people", type:"single",
+    kicker:"Your people",
+    title:"Who's in it with you?",
+    hint:"How big is your crew?",
+    options:[
+      {label:"Just me — the spotlight's mine", w:{solo:2}},
+      {label:"Me and one ride-or-die partner", w:{partner:3}},
+      {label:"A whole crew, writers'-room style", w:{team:3}},
+      {label:"Honestly, doesn't matter to me", w:{}}
+    ]
+  },
+  {
+    id:"dial", type:"single",
+    kicker:"Comedy ↔ drama",
+    title:"Where's your dial set?",
+    hint:"Funny, serious, or all of it?",
+    options:[
+      {label:"Make 'em laugh — funny first, funny always", w:{comedy:3}},
+      {label:"Make 'em feel — serious and emotional", w:{drama:3}},
+      {label:"The full range, loud yelling to soft sadness", w:{drama:2, comedy:1, acting:1}},
+      {label:"Neither — I'm here to inform or argue", w:{analysis:1, research:1, persuasion:1}}
+    ]
+  },
+  {
+    id:"fun", type:"multi",
+    kicker:"Pick all that apply",
+    title:"Which of these actually sound fun?",
+    hint:"Tap as many as you like.",
+    options:[
+      {label:"Memorizing & performing published scripts or lit", w:{interp:2, acting:1}},
+      {label:"Writing my own piece from scratch", w:{original:2, writing:1}},
+      {label:"Digging up sources and citing real evidence", w:{research:2}},
+      {label:"Choreography, blocking, big physical movement", w:{movement:2}},
+      {label:"Using boards or visual aids on stage", w:{visualaids:2}},
+      {label:"Reading aloud, beautifully, from a book or script", w:{reading:2}},
+      {label:"Wild voices and over-the-top characters", w:{acting:2, comedy:1}},
+      {label:"Following politics and current events daily", w:{currentevents:2}}
+    ]
+  },
+  {
+    id:"prep", type:"single",
+    kicker:"How you like to prep",
+    title:"What's your relationship with prep time?",
+    hint:"Be honest.",
+    options:[
+      {label:"Give me weeks to perfect one polished piece", w:{writing:1}},
+      {label:"~30 minutes to draw and prep on the spot", w:{limitedprep:3}},
+      {label:"Minutes — I prep live, right before I talk", w:{limitedprep:2, confrontation:1}},
+      {label:"A mix is fine", w:{}}
+    ]
+  },
+  {
+    id:"spark", type:"multi",
+    kicker:"Pick all that apply",
+    title:"What actually lights you up?",
+    hint:"Tap everything that hits.",
+    options:[
+      {label:"Spotting problems in society and pitching fixes", w:{persuasion:2, original:1}},
+      {label:"Weird facts and YouTube-rabbit-hole topics", w:{visualaids:1, original:1, research:1}},
+      {label:"The craft of writing and rhetoric itself", w:{writing:2, analysis:1}},
+      {label:"Winning a heated, competitive exchange", w:{confrontation:2}},
+      {label:"Pure high-energy, make-a-room-laugh performance", w:{comedy:2, acting:1}},
+      {label:"Big, moving, emotional storytelling", w:{drama:2, acting:1}},
+      {label:"Going full cartoon for a room of little kids", w:{whimsy:2, comedy:1}}
+    ]
+  }
+];
+
+/* ============================================================
+   STATE + ENGINE
+   ============================================================ */
+let state = { screen:"home", qi:0, answers:{}, filter:null, clusterChoice:null };
+const app = document.getElementById("app");
+const navToggle = document.getElementById("nav-toggle");
+
+function userVector(){
+  const v = {};
+  QUESTIONS.forEach(q=>{
+    const a = state.answers[q.id];
+    if(a==null) return;
+    const idxs = q.type==="multi" ? a : [a];
+    idxs.forEach(i=>{
+      const w = q.options[i].w || {};
+      for(const k in w){ v[k] = (v[k]||0) + w[k]; }
+    });
+  });
+  return v;
+}
+function cosine(a,b){
+  let dot=0, na=0, nb=0;
+  const keys = new Set([...Object.keys(a),...Object.keys(b)]);
+  keys.forEach(k=>{ dot += (a[k]||0)*(b[k]||0); });
+  for(const k in a) na += a[k]*a[k];
+  for(const k in b) nb += b[k]*b[k];
+  if(na===0||nb===0) return 0;
+  return dot/(Math.sqrt(na)*Math.sqrt(nb));
+}
+function ranked(){
+  const u = userVector();
+  return EVENTS.map(e=>({e, score:cosine(u,e.tags)}))
+               .sort((x,y)=> y.score - x.score);
+}
+/* The three interp-lit lanes share a profile; they compete as one and split
+   only after winning, via a source-material question. */
+const CLUSTER_REP = {
+  id:"interp-lit", name:"Drama, Prose & Poetry", abbr:"DPP", mono:"DP",
+  family:"Interp & Performance", tagline:"Range, emotional and otherwise",
+  tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
+};
+const SOURCE_OPTIONS = [
+  {src:"poetry", label:"Poems & sonnets", sub:"A single poem or a collection — Poetry"},
+  {src:"prose",  label:"Published books", sub:"Short stories & novel excerpts — Prose"},
+  {src:"drama",  label:"Screenplays & scripts", sub:"Published plays & screenplays — Drama"}
+];
+function scoredCollapsed(){
+  const u = userVector();
+  const scored = EVENTS.map(e=>({e, score:cosine(u,e.tags)}));
+  const members = scored.filter(s=>s.e.cluster==="interp-lit").sort((a,b)=>b.score-a.score);
+  const list = scored.filter(s=>s.e.cluster!=="interp-lit");
+  if(members.length) list.push({isCluster:true, e:CLUSTER_REP, score:members[0].score});
+  list.sort((a,b)=> b.score - a.score);
+  return list;
+}
+function whyTags(ev){
+  const u = userVector();
+  return Object.keys(ev.tags)
+    .filter(k => u[k])
+    .sort((a,b)=> (u[b]*ev.tags[b]) - (u[a]*ev.tags[a]))
+    .slice(0,5);
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function render(){
+  navToggle.textContent = state.screen==="directory" ? "← Back to finder" : "Browse all events →";
+  if(state.screen==="home") return renderHome();
+  if(state.screen==="quiz") return renderQuiz();
+  if(state.screen==="result") return renderResult();
+  if(state.screen==="directory") return renderDirectory();
+}
+
+function renderHome(){
+  const codes = EVENTS.map(e=>`<span><b>${e.abbr}</b> ${esc(e.name)}</span>`).join("");
+  app.innerHTML = `
+    <section class="hero">
+      <div class="spot"></div>
+      <div class="hero-inner">
+        <div class="eyebrow">14 events · 6 questions · ~60 seconds</div>
+        <h1>Find your <span class="em">event.</span></h1>
+        <p class="lede">Every speaker fits somewhere. Answer a few honest questions and we'll match you to the events <b>built for how you actually think and perform</b>, then you and your coach take it from there.</p>
+        <div class="hero-cta">
+          <button class="btn" id="start">Start the draw &rarr;</button>
+          <button class="btn ghost" id="browse">Just show me everything</button>
+        </div>
+      </div>
+      <div class="ticker"><div class="run">${codes}${codes}</div></div>
+      <p class="home-foot">No login, no wrong answers. Your matches are a starting point for a conversation with your coach, not a verdict.</p>
+    </section>`;
+  document.getElementById("start").onclick = ()=>{ state.screen="quiz"; state.qi=0; scrollTop(); render(); };
+  document.getElementById("browse").onclick = goDirectory;
+}
+
+function renderQuiz(){
+  const q = QUESTIONS[state.qi];
+  const total = QUESTIONS.length;
+  const pct = Math.round((state.qi)/total*100);
+  const cur = state.answers[q.id];
+  const isMulti = q.type==="multi";
+
+  const opts = q.options.map((o,i)=>{
+    const sel = isMulti ? (Array.isArray(cur)&&cur.includes(i)) : (cur===i);
+    return `<button class="opt ${sel?"sel":""}" data-i="${i}">
+      <span class="tick"></span>
+      <span class="otext">${esc(o.label)}${o.sub?`<span class="osub">${esc(o.sub)}</span>`:""}</span>
+    </button>`;
+  }).join("");
+
+  const canContinue = isMulti ? (Array.isArray(cur)&&cur.length>0) : (cur!=null);
+
+  app.innerHTML = `
+    <div class="progress">
+      <div class="pbar"><i style="width:${pct}%"></i></div>
+      <div class="pcount">Q${state.qi+1} / ${total}</div>
+    </div>
+    <div class="q-kicker">${esc(q.kicker)}</div>
+    <h2 class="q-title">${esc(q.title)}</h2>
+    <div class="q-hint">${esc(q.hint)}</div>
+    <div class="options">${opts}</div>
+    <div class="q-actions">
+      <button class="backlink" id="back">${state.qi===0?"← Start over":"← Back"}</button>
+      ${isMulti ? `<button class="btn small" id="next" ${canContinue?"":"style='opacity:.4;pointer-events:none'"}>${state.qi===total-1?"See my matches":"Continue"} &rarr;</button>` : ``}
+    </div>`;
+
+  app.querySelectorAll(".opt").forEach(btn=>{
+    btn.onclick = ()=>{
+      const i = +btn.dataset.i;
+      if(isMulti){
+        let arr = Array.isArray(state.answers[q.id]) ? state.answers[q.id].slice() : [];
+        arr.includes(i) ? arr.splice(arr.indexOf(i),1) : arr.push(i);
+        state.answers[q.id]=arr;
+        render();
+      } else {
+        state.answers[q.id]=i;
+        advance();
+      }
+    };
+  });
+  document.getElementById("back").onclick = ()=>{
+    if(state.qi===0){ state = {screen:"home",qi:0,answers:{},filter:null,clusterChoice:null}; }
+    else state.qi--;
+    scrollTop(); render();
+  };
+  const nx = document.getElementById("next");
+  if(nx) nx.onclick = advance;
+}
+
+function advance(){
+  if(state.qi < QUESTIONS.length-1){ state.qi++; }
+  else { state.screen="result"; }
+  scrollTop(); render();
+}
+
+function renderResult(){
+  const list = scoredCollapsed();
+  const topEntry = list[0];
+
+  // If solo lit-interp is the best fit, split the lane before showing results.
+  if(topEntry.isCluster && !state.clusterChoice){
+    return renderLanePick(topEntry);
+  }
+
+  const topEv = topEntry.isCluster ? EVENTS.find(e=>e.id===state.clusterChoice) : topEntry.e;
+  const topScore = topEntry.score;
+  const runners = list.slice(1,4);
+  const why = whyTags(topEv);
+  const chips = Object.keys(topEv.tags).map(k=>{
+    const hit = why.includes(k);
+    return `<span class="chip ${hit?"hit":""}">${esc(TAGS[k])}</span>`;
+  }).join("");
+  const whyChips = why.map(k=>`<span class="chip hit">${esc(TAGS[k])}</span>`).join("");
+
+  app.innerHTML = `
+    <div class="res-head">
+      <div class="spot"></div>
+      <div class="inner">
+        <div class="res-eyebrow">Your top match</div>
+      </div>
+    </div>
+    <div class="topcard">
+      <div class="tc-top">
+        <div class="monogram">${esc(topEv.mono)}</div>
+        <div class="tc-name">
+          <h2>${esc(topEv.name)}</h2>
+          <div class="tc-tag">${esc(topEv.tagline)}</div>
+          <div class="meter">
+            <div class="bar"><i style="width:${Math.round(topScore*100)}%"></i></div>
+            <div class="pct">${Math.round(topScore*100)}% fit</div>
+          </div>
+        </div>
+      </div>
+      <p class="tc-blurb">${esc(topEv.blurb)}</p>
+      ${topEntry.isCluster?`<div class="note">Your lane: <b>${esc(topEv.name)}</b>. Same craft as the other two interp lanes — you can switch anytime.</div>`:""}
+      ${topEv.note?`<div class="note">${esc(topEv.note)}</div>`:""}
+      ${topEv.placeholder?`<div class="note">Heads up: this description is a placeholder until the team adds its own POI write-up.</div>`:""}
+      <div class="chips">${chips}</div>
+      <div class="why">
+        <div class="lab">Why this fits you</div>
+        <div class="chips">${whyChips}</div>
+      </div>
+    </div>
+
+    <div class="runners">
+      <h3>Also worth a look</h3>
+      ${runners.map(x=>{
+        const id = x.isCluster ? "drama" : x.e.id;
+        return `<button class="rcard" data-id="${id}">
+          <span class="rmono">${esc(x.e.abbr)}</span>
+          <span class="rmid">
+            <span class="rn">${esc(x.e.name)}</span>
+            <span class="rt">${esc(x.e.tagline)}</span>
+          </span>
+          <span class="rmeter"><i style="width:${Math.round(x.score*100)}%"></i></span>
+        </button>`;}).join("")}
+    </div>
+
+    <div class="res-actions">
+      <button class="btn" id="again">Take it again</button>
+      ${topEntry.isCluster?`<button class="btn ghost" id="switch">Switch lane</button>`:""}
+      <button class="btn ghost" id="all">Browse all events</button>
+    </div>`;
+
+  app.querySelectorAll(".rcard").forEach(c=>{
+    c.onclick = ()=>{ state.screen="directory"; state.filter=null; scrollTop(); render();
+      setTimeout(()=>{ const el=document.getElementById("ev-"+c.dataset.id); if(el){el.scrollIntoView({behavior:"smooth",block:"center"}); el.style.borderColor="var(--coral)";} },60);
+    };
+  });
+  document.getElementById("again").onclick = ()=>{ state={screen:"quiz",qi:0,answers:{},filter:null,clusterChoice:null}; scrollTop(); render(); };
+  const sw = document.getElementById("switch");
+  if(sw) sw.onclick = ()=>{ state.clusterChoice=null; scrollTop(); render(); };
+  document.getElementById("all").onclick = goDirectory;
+}
+
+function renderLanePick(topEntry){
+  const opts = SOURCE_OPTIONS.map(o=>`
+    <button class="opt" data-src="${o.src}">
+      <span class="tick"></span>
+      <span class="otext">${esc(o.label)}<span class="osub">${esc(o.sub)}</span></span>
+    </button>`).join("");
+  app.innerHTML = `
+    <div class="res-head">
+      <div class="spot"></div>
+      <div class="inner"><div class="res-eyebrow">You're an interp performer</div></div>
+    </div>
+    <div class="topcard">
+      <div class="tc-top">
+        <div class="monogram">DP</div>
+        <div class="tc-name">
+          <h2>Drama, Prose &amp; Poetry</h2>
+          <div class="tc-tag">Range, emotional and otherwise</div>
+          <div class="meter">
+            <div class="bar"><i style="width:${Math.round(topEntry.score*100)}%"></i></div>
+            <div class="pct">${Math.round(topEntry.score*100)}% fit</div>
+          </div>
+        </div>
+      </div>
+      <p class="tc-blurb">Solo lit interpretation is your best fit — performing published writing with full emotional range. These three events are the same craft; they differ only in the kind of writing you bring to the stage. One last question:</p>
+      <div class="q-kicker" style="margin-top:22px">Which calls to you?</div>
+      <div class="options">${opts}</div>
+    </div>
+    <div class="res-actions"><button class="backlink" id="retake2">← Take the finder again</button></div>`;
+  app.querySelectorAll(".opt").forEach(b=>{
+    b.onclick = ()=>{ state.clusterChoice = b.dataset.src; scrollTop(); render(); };
+  });
+  document.getElementById("retake2").onclick = ()=>{ state={screen:"quiz",qi:0,answers:{},filter:null,clusterChoice:null}; scrollTop(); render(); };
+}
+
+function renderDirectory(){
+  const allTags = Object.keys(TAGS);
+  const fchips = allTags.map(k=>`<button class="fchip ${state.filter===k?"on":""}" data-k="${k}">${esc(TAGS[k])}</button>`).join("");
+
+  let groups = "";
+  FAMILY_ORDER.forEach(fam=>{
+    let evs = EVENTS.filter(e=>e.family===fam);
+    if(state.filter) evs = evs.filter(e=>e.tags[state.filter]);
+    if(!evs.length) return;
+    groups += `<div class="famgroup"><div class="famtitle">${esc(fam)}</div><div class="grid">${
+      evs.map(e=>{
+        const ch = Object.keys(e.tags).sort((a,b)=>e.tags[b]-e.tags[a]).slice(0,5)
+          .map(k=>`<span class="chip ${state.filter===k?"hit":""}">${esc(TAGS[k])}</span>`).join("");
+        return `<div class="ecard" id="ev-${e.id}">
+          <div class="ehead"><h3>${esc(e.name)}</h3><span class="abbr">${esc(e.abbr)}</span></div>
+          <div class="etag">${esc(e.tagline)}</div>
+          <div class="eblurb">${esc(e.blurb)}</div>
+          ${e.placeholder?`<div class="placeholder">Placeholder — needs the team's POI write-up.</div>`:""}
+          <div class="echips">${ch}</div>
+          <div class="efmt">${esc(e.fmt)}${e.note?` · ${esc(e.note)}`:""}</div>
+        </div>`;
+      }).join("")
+    }</div></div>`;
+  });
+
+  app.innerHTML = `
+    <div class="dir-head">
+      <div class="eyebrow">The full lineup</div>
+      <h1>All the events</h1>
+      <p class="dir-sub">Every category the team runs, with the traits we look for. Filter by a trait to see which events reward it.</p>
+    </div>
+    <div class="filters">
+      <button class="fchip ${!state.filter?"on":""}" data-k="">All</button>
+      ${fchips}
+    </div>
+    ${groups || `<p class="dir-sub">No events match that trait on their own — try another.</p>`}
+    <div class="res-actions" style="justify-content:flex-start;margin-top:40px">
+      <button class="btn" id="toquiz">Take the finder &rarr;</button>
+    </div>`;
+
+  app.querySelectorAll(".fchip").forEach(b=>{
+    b.onclick = ()=>{ state.filter = b.dataset.k || null; scrollTop(); render(); };
+  });
+  document.getElementById("toquiz").onclick = ()=>{ state={screen:"quiz",qi:0,answers:{},filter:null,clusterChoice:null}; scrollTop(); render(); };
+}
+
+function goDirectory(){ state.screen="directory"; state.filter=null; scrollTop(); render(); }
+function scrollTop(){ window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"}); }
+
+navToggle.onclick = (e)=>{
+  e.preventDefault();
+  if(state.screen==="directory"){ state.screen = Object.keys(state.answers).length?"result":"home"; }
+  else goDirectory();
+  scrollTop(); render();
+};
+
+render();
+</script>
+</body>
+</html>
