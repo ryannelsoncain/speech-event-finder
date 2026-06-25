@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Find Your Event — Speech &amp; Debate</title>
+<title>Find Your Event: Speech &amp; Debate</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -313,7 +313,7 @@ const EVENTS = [
     id:"creative", name:"Creative Expression", abbr:"CE", mono:"CE",
     family:"Interp & Performance",
     tagline:"A Marketplace of Ideas",
-    blurb:"You write your own original piece — poetry, a monologue, or a short story — and bring it to life with a real arc: teaser, conflict, climax, ending. Total creative freedom, from the first word to the final bow.",
+    blurb:"You write your own original piece, poetry, a monologue, or a short story, and bring it to life with a real arc: teaser, conflict, climax, ending. Total creative freedom, from the first word to the final bow.",
     fmt:"Solo · Original · ~10 min · Performed",
     tags:{solo:2, original:3, writing:2, acting:2, drama:1, comedy:1}
   },
@@ -329,7 +329,7 @@ const EVENTS = [
     id:"drama", name:"Drama", abbr:"DRA", mono:"DR",
     family:"Interp & Performance", cluster:"interp-lit",
     tagline:"Range, emotional and otherwise",
-    blurb:"Solo interpretation of published plays and screenplays. Bring scripted scenes to life across the full emotional range — loud, raw intensity to quiet vulnerability and the nuanced middle. Pick pieces that move you, and stay emotionally healthy doing it.",
+    blurb:"Solo interpretation of published plays and screenplays. Bring scripted scenes to life across the full emotional range: loud, raw intensity to quiet vulnerability and the nuanced middle. Pick pieces that move you, and stay emotionally healthy doing it.",
     fmt:"Solo · Plays & screenplays · ~10 min · Memorized",
     tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
   },
@@ -345,7 +345,7 @@ const EVENTS = [
     id:"poetry", name:"Poetry", abbr:"POE", mono:"PT",
     family:"Interp & Performance", cluster:"interp-lit",
     tagline:"Range, emotional and otherwise",
-    blurb:"Solo interpretation of published poems — a single work or a collection. Wield rhythm, imagery, and emotion to make verse land, from loud yelling to soft sadness. Pick pieces that speak to you, and stay emotionally healthy doing it.",
+    blurb:"Solo interpretation of published poems, a single work or a collection. Wield rhythm, imagery, and emotion to make verse land, from loud yelling to soft sadness. Pick pieces that speak to you, and stay emotionally healthy doing it.",
     fmt:"Solo · Published poems · ~10 min · Memorized",
     tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
   },
@@ -370,7 +370,7 @@ const EVENTS = [
     id:"extemp", name:"Extemporaneous Speaking", abbr:"XS", mono:"XS",
     family:"Limited Prep / Draw",
     tagline:"Political, Persuasive, Incisive",
-    blurb:"Draw a current-events question, prep a 7-minute speech in 30 minutes. For news junkies who research fast and explain why it matters — Jon Stewart energy with real analysis.",
+    blurb:"Draw a current-events question, prep a 7-minute speech in 30 minutes. For news junkies who research fast and explain why it matters; Jon Stewart energy with real analysis.",
     fmt:"Solo · Draw · 30-min prep · 7 min",
     note:"International Extemp is an advanced track for experienced juniors & seniors.",
     tags:{currentevents:3, research:2, limitedprep:2, analysis:2, persuasion:1, solo:1, confrontation:1}
@@ -387,7 +387,7 @@ const EVENTS = [
     id:"hi", name:"Humorous Interpretation", abbr:"HI", mono:"HI",
     family:"Interp & Performance",
     tagline:"Funny First, Funny Always",
-    blurb:"Solo comedic performance of a published script. Big characters, wild voices, high-octane energy and a full story arc — laughs above all.",
+    blurb:"Solo comedic performance of a published script. Big characters, wild voices, high-octane energy and a full story arc; laughs above all.",
     fmt:"Solo · Published script · ~10 min · Memorized",
     tags:{interp:3, solo:2, comedy:3, acting:2}
   },
@@ -411,16 +411,16 @@ const EVENTS = [
     id:"poi", name:"Program Oral Interpretation", abbr:"POI", mono:"PO",
     family:"Interp & Performance",
     tagline:"Many voices, one story",
-    blurb:"Weave prose, poetry, and drama around a single theme into one seamless performance — and use it to make an argument. POI lives right between interp and public address: you're the writer, director, and lead actor, making a room laugh, cry, think, and reflect, all from a small black binder.",
+    blurb:"Weave prose, poetry, and drama around a single theme into one seamless performance, and use it to make an argument. POI lives right between interp and public address: you're the writer, director, and lead actor, making a room laugh, cry, think, and reflect, all from a small black binder.",
     fmt:"Solo · Multi-genre · Binder · ~10 min",
-    note:"Not a Minnesota state event, so you'd double-enter to make the section roster — but it's a national category (NIETOC, NSDA).",
+    note:"Not a Minnesota state event, so you'd double-enter to make the section roster, but it's a national category (NIETOC, NSDA).",
     tags:{interp:3, acting:2, writing:2, original:1, analysis:1, research:1, persuasion:1, reading:2, solo:2, drama:1, comedy:1}
   },
   {
     id:"story", name:"Storytelling", abbr:"ST", mono:"ST",
     family:"Interp & Performance",
     tagline:"The Nuclear Reactors of Speech Energy",
-    blurb:"Draw a story and perform it for (imaginary) 5-year-olds — stock characters, a narrator, huge cartoon energy and physical comedy in 7 minutes.",
+    blurb:"Draw a story and perform it for (imaginary) 5-year-olds; stock characters, a narrator, huge cartoon energy and physical comedy in 7 minutes.",
     fmt:"Solo · Draw · 7 min · High energy",
     tags:{limitedprep:2, solo:1, comedy:2, acting:2, whimsy:3}
   }
@@ -436,12 +436,12 @@ const QUESTIONS = [
     id:"mode", type:"single",
     kicker:"First things first",
     title:"When you picture yourself on stage, what feels most like you?",
-    hint:"Go with your gut — there's no wrong answer.",
+    hint:"Go with your gut; there's no wrong answer.",
     options:[
       {label:"Disappearing into a character and acting out a story", sub:"Voices, movement, becoming someone else", w:{acting:3, interp:2}},
       {label:"Speaking as myself about things I actually care about", sub:"My ideas, my words, my voice", w:{original:3, writing:1}},
       {label:"Breaking down the real world and why it matters", sub:"News, big speeches, ideas worth unpacking", w:{currentevents:2, analysis:2, research:1}},
-      {label:"Honestly? Not sure yet — show me a bit of everything", sub:"Totally okay to not know", w:{}}
+      {label:"Honestly? Not sure yet, show me a bit of everything", sub:"Totally okay to not know", w:{}}
     ]
   },
   {
@@ -450,7 +450,7 @@ const QUESTIONS = [
     title:"Who do you want beside you when the lights come up?",
     hint:"Most events are solo; one is a duo.",
     options:[
-      {label:"Just me — the stage is mine", w:{solo:2}},
+      {label:"Just me, the stage is mine", w:{solo:2}},
       {label:"Me and one partner, totally in sync", w:{partner:3}},
       {label:"Either way works for me", w:{}}
     ]
@@ -463,8 +463,8 @@ const QUESTIONS = [
     options:[
       {label:"I live to make people laugh", w:{comedy:3}},
       {label:"I'm drawn to deep, emotional, serious moments", w:{drama:3}},
-      {label:"I want the full range — big laughs and real tears", w:{drama:2, comedy:1, acting:1}},
-      {label:"Neither, really — I'd rather inform or persuade", w:{analysis:1, research:1, persuasion:1}}
+      {label:"I want the full range, big laughs and real tears", w:{drama:2, comedy:1, acting:1}},
+      {label:"Neither, really; I'd rather inform or persuade", w:{analysis:1, research:1, persuasion:1}}
     ]
   },
   {
@@ -490,8 +490,8 @@ const QUESTIONS = [
     hint:"Be honest with yourself.",
     options:[
       {label:"Give me the whole season to perfect one piece", w:{writing:1}},
-      {label:"Hand me a surprise topic and ~30 minutes — I'll figure it out", w:{limitedprep:3}},
-      {label:"Minutes, not hours — I think best on the spot", w:{limitedprep:2, confrontation:1}},
+      {label:"Hand me a surprise topic and ~30 minutes; I'll figure it out", w:{limitedprep:3}},
+      {label:"Minutes, not hours; I think best on the spot", w:{limitedprep:2, confrontation:1}},
       {label:"A mix of both is fine", w:{}}
     ]
   },
@@ -555,9 +555,9 @@ const CLUSTER_REP = {
   tags:{interp:3, solo:2, drama:3, acting:2, reading:1}
 };
 const SOURCE_OPTIONS = [
-  {src:"poetry", label:"Poems & sonnets", sub:"A single poem or a collection — Poetry"},
-  {src:"prose",  label:"Published books", sub:"Short stories & novel excerpts — Prose"},
-  {src:"drama",  label:"Screenplays & scripts", sub:"Published plays & screenplays — Drama"}
+  {src:"poetry", label:"Poems & sonnets", sub:"A single poem or a collection, Poetry"},
+  {src:"prose",  label:"Published books", sub:"Short stories & novel excerpts, Prose"},
+  {src:"drama",  label:"Screenplays & scripts", sub:"Published plays & screenplays, Drama"}
 ];
 function scoredCollapsed(){
   const u = userVector();
@@ -709,7 +709,7 @@ function renderResult(){
         </div>
       </div>
       <p class="tc-blurb">${esc(topEv.blurb)}</p>
-      ${topEntry.isCluster?`<div class="note">Your lane: <b>${esc(topEv.name)}</b>. Same craft as the other two interp lanes — you can switch anytime.</div>`:""}
+      ${topEntry.isCluster?`<div class="note">Your lane: <b>${esc(topEv.name)}</b>. Same craft as the other two interp lanes; you can switch anytime.</div>`:""}
       ${topEv.note?`<div class="note">${esc(topEv.note)}</div>`:""}
       ${topEv.placeholder?`<div class="note">Heads up: this description is a placeholder until the team adds its own POI write-up.</div>`:""}
       <div class="chips">${chips}</div>
@@ -773,7 +773,7 @@ function renderLanePick(topEntry){
           </div>
         </div>
       </div>
-      <p class="tc-blurb">Solo lit interpretation is your best fit — performing published writing with full emotional range. These three events are the same craft; they differ only in the kind of writing you bring to the stage. One last question:</p>
+      <p class="tc-blurb">Solo lit interpretation is your best fit, performing published writing with full emotional range. These three events are the same craft; they differ only in the kind of writing you bring to the stage. One last question:</p>
       <div class="q-kicker" style="margin-top:22px">Which calls to you?</div>
       <div class="options">${opts}</div>
     </div>
@@ -801,7 +801,7 @@ function renderDirectory(){
           <div class="ehead"><h3>${esc(e.name)}</h3><span class="abbr">${esc(e.abbr)}</span></div>
           <div class="etag">${esc(e.tagline)}</div>
           <div class="eblurb">${esc(e.blurb)}</div>
-          ${e.placeholder?`<div class="placeholder">Placeholder — needs the team's POI write-up.</div>`:""}
+          ${e.placeholder?`<div class="placeholder">Placeholder, needs the team's POI write-up.</div>`:""}
           <div class="echips">${ch}</div>
           <div class="efmt">${esc(e.fmt)}${e.note?` · ${esc(e.note)}`:""}</div>
         </div>`;
@@ -819,7 +819,7 @@ function renderDirectory(){
       <button class="fchip ${!state.filter?"on":""}" data-k="">All</button>
       ${fchips}
     </div>
-    ${groups || `<p class="dir-sub">No events match that trait on their own — try another.</p>`}
+    ${groups || `<p class="dir-sub">No events match that trait on their own; try another.</p>`}
     <div class="res-actions" style="justify-content:flex-start;margin-top:40px">
       <button class="btn" id="toquiz">Take the finder &rarr;</button>
     </div>`;
